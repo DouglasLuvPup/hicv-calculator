@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HICV Calculator">
+    <title>Holiday Inn Club Vacations - Reservation Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff8844 0%, #ff6622 100%);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header h2 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        main {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            color: #2c3e50;
+            border-bottom: 3px solid #ff7733;
+            padding-bottom: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .input-group input[type="date"],
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        .input-group input[type="text"][readonly] {
+            background: #e9ecef;
+            cursor: default;
+            color: #495057;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #ff7733;
+        }
+
+        .results {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #ff7733;
+        }
+
+        .result-row .label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .result-row .value {
+            font-weight: 700;
+            color: #ff7733;
+            font-size: 1.05rem;
+        }
+
+        .windows-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .windows-table thead {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .windows-table th {
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .windows-table tbody tr {
+            border-bottom: 1px solid #eee;
+        }
+
+        .windows-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .windows-table td {
+            padding: 10px;
+            color: #555;
+        }
+
+        .windows-table tbody td:first-child {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            header h2 {
+                font-size: 0.95rem;
+            }
+
+            main {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .windows-table {
+                font-size: 0.8rem;
+            }
+
+            .windows-table th,
+            .windows-table td {
+                padding: 8px 5px;
+            }
+
+            .result-row {
+                padding: 10px 12px;
+            }
+
+            .result-row .label {
+                font-size: 0.85rem;
+            }
+
+            .result-row .value {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            header h1 {
+                font-size: 1.3rem;
+            }
+
+            .windows-table th,
+            .windows-table td {
+                font-size: 0.75rem;
+                padding: 6px 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Holiday Inn Club Vacations (HICV)</h1>
+            <h2>Reservation Windows Calculator</h2>
+        </header>
+
+        <main>
+            <!-- Section 1: 1st Day of Reservation Window -->
+            <section class="card">
+                <h3>1st Day of Reservation Window</h3>
+                <div class="input-group">
+                    <label for="fromDate">From Today's Date:</label>
+                    <input type="text" id="fromDate" readonly />
+                </div>
+                <div class="results">
+                    <div class="result-row">
+                        <span class="label">Home Access</span>
+                        <span class="value" id="homeAccessDate">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="label">Resort Access</span>
+                        <span class="value" id="resortAccessDate">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="label">Open Access</span>
+                        <span class="value" id="openAccessDate">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="label">Complimentary Stays (90-61 days)</span>
+                        <span class="value" id="complimentaryDate1">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="label">Complimentary Stays (60-1 days)</span>
+                        <span class="value" id="complimentaryDate2">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Reservation Windows Reference -->
+            <section class="card">
+                <h3>Reservation Windows</h3>
+                <table class="windows-table">
+                    <thead>
+                        <tr>
+                            <th>Access Type</th>
+                            <th>Months</th>
+                            <th>Days</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Home Access</td>
+                            <td>36 mos. to 13 mos.</td>
+                            <td>1095 days to 396 days</td>
+                        </tr>
+                        <tr>
+                            <td>Resort Access</td>
+                            <td>13 mos. to 10 mos.</td>
+                            <td>395 days to 304 days</td>
+                        </tr>
+                        <tr>
+                            <td>Open Access</td>
+                            <td>10 mos. to 1 day</td>
+                            <td>303 days to 1 day</td>
+                        </tr>
+                        <tr>
+                            <td>Complimentary Stays</td>
+                            <td>3 mos. to 2 mos.</td>
+                            <td>90 days to 61 days</td>
+                        </tr>
+                        <tr>
+                            <td>Complimentary Stays</td>
+                            <td>2 mos. to 1 day</td>
+                            <td>60 days to 1 day</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Section 3: Earliest Booking Date -->
+            <section class="card">
+                <h3>Earliest Booking Date</h3>
+                <div class="input-group">
+                    <label for="desiredDate">From 1st Day of Desired Travel:</label>
+                    <input type="date" id="desiredDate" />
+                </div>
+                <div class="results">
+                    <div class="result-row">
+                        <span class="label">Home Access</span>
+                        <span class="value" id="homeBookingDate">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="label">Resort Access</span>
+                        <span class="value" id="resortBookingDate">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="label">Open Access</span>
+                        <span class="value" id="openBookingDate">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="label">Complimentary Stays (90-61 days)</span>
+                        <span class="value" id="complimentaryBookingDate1">-</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="label">Complimentary Stays (60-1 days)</span>
+                        <span class="value" id="complimentaryBookingDate2">-</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>HICV Reservation Calculator &copy; 2025 | Works on any device</p>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+            
+            // Reservation window configurations (in days)
+            var WINDOWS = {
+                homeAccess: 1095,          // 36 months
+                resortAccess: 395,         // 13 months
+                openAccess: 303,           // 10 months
+                complimentary1: 90,        // 3 months
+                complimentary2: 60         // 2 months
+            };
+
+            // Add days to a date
+            function addDays(date, days) {
+                var result = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                result.setDate(result.getDate() + days);
+                return result;
+            }
+
+            // Subtract days from a date
+            function subtractDays(date, days) {
+                var result = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                result.setDate(result.getDate() - days);
+                return result;
+            }
+
+            // Format date for display (MM/DD/YYYY)
+            function formatDate(date) {
+                var month = String(date.getMonth() + 1);
+                var day = String(date.getDate());
+                var year = date.getFullYear();
+                
+                if (month.length < 2) month = '0' + month;
+                if (day.length < 2) day = '0' + day;
+                
+                return month + '/' + day + '/' + year;
+            }
+
+            // Format date for input (YYYY-MM-DD)
+            function formatDateInput(date) {
+                var month = String(date.getMonth() + 1);
+                var day = String(date.getDate());
+                var year = date.getFullYear();
+                
+                if (month.length < 2) month = '0' + month;
+                if (day.length < 2) day = '0' + day;
+                
+                return year + '-' + month + '-' + day;
+            }
+
+            // Parse date from input value
+            function parseDate(dateString) {
+                if (!dateString) return null;
+                var parts = dateString.split('-');
+                if (parts.length !== 3) return null;
+                return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+            }
+
+            // Calculate 1st Day of Reservation Window
+            function calculateReservationWindows() {
+                var today = new Date();
+                
+                var homeDate = addDays(today, WINDOWS.homeAccess);
+                var resortDate = addDays(today, WINDOWS.resortAccess);
+                var openDate = addDays(today, WINDOWS.openAccess);
+                var complimentaryDate1 = addDays(today, WINDOWS.complimentary1);
+                var complimentaryDate2 = addDays(today, WINDOWS.complimentary2);
+                
+                document.getElementById('homeAccessDate').textContent = formatDate(homeDate);
+                document.getElementById('resortAccessDate').textContent = formatDate(resortDate);
+                document.getElementById('openAccessDate').textContent = formatDate(openDate);
+                document.getElementById('complimentaryDate1').textContent = formatDate(complimentaryDate1);
+                document.getElementById('complimentaryDate2').textContent = formatDate(complimentaryDate2);
+            }
+
+            // Calculate Earliest Booking Date
+            function calculateEarliestBooking() {
+                var input = document.getElementById('desiredDate');
+                if (!input || !input.value) return;
+                
+                var desiredDate = parseDate(input.value);
+                if (!desiredDate || isNaN(desiredDate.getTime())) {
+                    console.log('Invalid date:', input.value);
+                    return;
+                }
+                
+                console.log('Calculating for date:', formatDate(desiredDate));
+                
+                var homeBooking = subtractDays(desiredDate, WINDOWS.homeAccess);
+                var resortBooking = subtractDays(desiredDate, WINDOWS.resortAccess);
+                var openBooking = subtractDays(desiredDate, WINDOWS.openAccess);
+                var complimentaryBooking1 = subtractDays(desiredDate, WINDOWS.complimentary1);
+                var complimentaryBooking2 = subtractDays(desiredDate, WINDOWS.complimentary2);
+                
+                document.getElementById('homeBookingDate').textContent = formatDate(homeBooking);
+                document.getElementById('resortBookingDate').textContent = formatDate(resortBooking);
+                document.getElementById('openBookingDate').textContent = formatDate(openBooking);
+                document.getElementById('complimentaryBookingDate1').textContent = formatDate(complimentaryBooking1);
+                document.getElementById('complimentaryBookingDate2').textContent = formatDate(complimentaryBooking2);
+            }
+
+            // Initialize
+            function init() {
+                var today = new Date();
+                
+                // Set today's date display
+                var fromDateInput = document.getElementById('fromDate');
+                if (fromDateInput) {
+                    fromDateInput.value = formatDate(today);
+                }
+                
+                // Set desired date to today
+                var desiredDateInput = document.getElementById('desiredDate');
+                if (desiredDateInput) {
+                    desiredDateInput.value = formatDateInput(today);
+                    
+                    // Add multiple event listeners for iOS compatibility
+                    desiredDateInput.addEventListener('change', function(e) {
+                        console.log('Change event:', e.target.value);
+                        calculateEarliestBooking();
+                    });
+                    desiredDateInput.addEventListener('input', function(e) {
+                        console.log('Input event:', e.target.value);
+                        calculateEarliestBooking();
+                    });
+                    desiredDateInput.addEventListener('blur', function(e) {
+                        console.log('Blur event:', e.target.value);
+                        calculateEarliestBooking();
+                    });
+                    
+                    // Force trigger after a delay for iOS
+                    setTimeout(function() {
+                        calculateEarliestBooking();
+                    }, 100);
+                }
+                
+                // Calculate initial values
+                calculateReservationWindows();
+                calculateEarliestBooking();
+            }
+
+            // Run when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+</body>
+</html>
