@@ -49,9 +49,19 @@
         }
 
         main {
-            display: grid;
+            display: flex;
+            flex-direction: column;
             gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+        
+        .top-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .bottom-section {
+            width: 100%;
         }
 
         .card {
@@ -197,7 +207,7 @@
                 font-size: 0.95rem;
             }
 
-            main {
+            .top-section {
                 grid-template-columns: 1fr;
             }
 
@@ -248,39 +258,72 @@
         </header>
 
         <main>
-            <!-- Section 1: 1st Day of Reservation Window -->
-            <section class="card">
-                <h3>1st Day of Reservation Window</h3>
-                <div class="input-group">
-                    <label for="fromDate">From Today's Date:</label>
-                    <input type="text" id="fromDate" readonly />
-                </div>
-                <div class="results">
-                    <div class="result-row">
-                        <span class="label">Home Access</span>
-                        <span class="value" id="homeAccessDate">-</span>
+            <div class="top-section">
+                <!-- Section 1: 1st Day of Reservation Window -->
+                <section class="card">
+                    <h3>1st Day of Reservation Window</h3>
+                    <div class="input-group">
+                        <label for="fromDate">From Today's Date:</label>
+                        <input type="text" id="fromDate" readonly />
                     </div>
-                    <div class="result-row">
-                        <span class="label">Resort Access</span>
-                        <span class="value" id="resortAccessDate">-</span>
+                    <div class="results">
+                        <div class="result-row">
+                            <span class="label">Home Access</span>
+                            <span class="value" id="homeAccessDate">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Resort Access</span>
+                            <span class="value" id="resortAccessDate">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Open Access</span>
+                            <span class="value" id="openAccessDate">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Complimentary (Elite/Diamond)</span>
+                            <span class="value" id="complimentaryDate1">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Complimentary (Prime/Preferred/Premier/Prestige)</span>
+                            <span class="value" id="complimentaryDate2">-</span>
+                        </div>
                     </div>
-                    <div class="result-row">
-                        <span class="label">Open Access</span>
-                        <span class="value" id="openAccessDate">-</span>
+                </section>
+
+                <!-- Section 3: Earliest Booking Date -->
+                <section class="card">
+                    <h3>Earliest Booking Date</h3>
+                    <div class="input-group">
+                        <label for="desiredDate">From 1st Day of Desired Travel:</label>
+                        <input type="date" id="desiredDate" />
                     </div>
-                    <div class="result-row">
-                        <span class="label">Complimentary (Elite/Diamond)</span>
-                        <span class="value" id="complimentaryDate1">-</span>
+                    <div class="results">
+                        <div class="result-row">
+                            <span class="label">Home Access</span>
+                            <span class="value" id="homeBookingDate">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Resort Access</span>
+                            <span class="value" id="resortBookingDate">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Open Access</span>
+                            <span class="value" id="openBookingDate">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Complimentary (Elite/Diamond)</span>
+                            <span class="value" id="complimentaryBookingDate1">-</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="label">Complimentary (Prime/Preferred/Premier/Prestige)</span>
+                            <span class="value" id="complimentaryBookingDate2">-</span>
+                        </div>
                     </div>
-                    <div class="result-row">
-                        <span class="label">Complimentary (Prime/Preferred/Premier/Prestige)</span>
-                        <span class="value" id="complimentaryDate2">-</span>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </div>
 
             <!-- Section 2: Reservation Windows Reference -->
-            <section class="card">
+            <section class="card bottom-section">
                 <h3>Reservation Windows</h3>
                 <table class="windows-table">
                     <thead>
@@ -318,37 +361,6 @@
                         </tr>
                     </tbody>
                 </table>
-            </section>
-
-            <!-- Section 3: Earliest Booking Date -->
-            <section class="card">
-                <h3>Earliest Booking Date</h3>
-                <div class="input-group">
-                    <label for="desiredDate">From 1st Day of Desired Travel:</label>
-                    <input type="date" id="desiredDate" />
-                </div>
-                <div class="results">
-                    <div class="result-row">
-                        <span class="label">Home Access</span>
-                        <span class="value" id="homeBookingDate">-</span>
-                    </div>
-                    <div class="result-row">
-                        <span class="label">Resort Access</span>
-                        <span class="value" id="resortBookingDate">-</span>
-                    </div>
-                    <div class="result-row">
-                        <span class="label">Open Access</span>
-                        <span class="value" id="openBookingDate">-</span>
-                    </div>
-                    <div class="result-row">
-                        <span class="label">Complimentary (Elite/Diamond)</span>
-                        <span class="value" id="complimentaryBookingDate1">-</span>
-                    </div>
-                    <div class="result-row">
-                        <span class="label">Complimentary (Prime/Preferred/Premier/Prestige)</span>
-                        <span class="value" id="complimentaryBookingDate2">-</span>
-                    </div>
-                </div>
             </section>
         </main>
 
